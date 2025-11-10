@@ -131,6 +131,7 @@ function RIFTRAFT.VoidCardArea:update_text_state()
 end
 
 function RIFTRAFT.VoidCardArea:should_show()
+    if RIFTRAFT.only_jokers then return false end
     if self.override_show > 0 then return true end
     if (G.GAME.used_vouchers.v_riftraft_riftshop_send or RIFTRAFT.allow_buy_always) and G.STATE == G.STATES.SHOP then return true end
     if G.STATE == G.STATES.TAROT_PACK
@@ -146,6 +147,7 @@ end
 function RIFTRAFT.VoidCardArea:can_send()
     self.selecting_shop = false
     self.selecting_soul = false
+    if RIFTRAFT.only_jokers then return false end
     local send_card = nil
     local cost = 0
     if (G.GAME.used_vouchers.v_riftraft_riftshop_send or RIFTRAFT.allow_buy_always) and G.STATE == G.STATES.SHOP then

@@ -17,6 +17,7 @@ SMODS.ConsumableType{
     },
     default = "c_riftraft_canyon",
     collection_rows = {5,6},
+    no_collection = RIFTRAFT.only_jokers,
     create_UIBox_your_collection = function(self)
         local type_buf = {}
         for _, v in ipairs(SMODS.ConsumableType.ctype_buffer) do
@@ -27,6 +28,10 @@ SMODS.ConsumableType{
         })
     end,
     shop_rate = 0, -- can be increased with the Wormhole voucher
+    -- inject = function(self)
+    --     if RIFTRAFT.only_jokers then return end
+    --     SMODS.ConsumableType.inject(self)
+    -- end,
 }
 RIFTRAFT.RiftCard = SMODS.Consumable:extend {
     set = 'Rift',
@@ -35,7 +40,11 @@ RIFTRAFT.RiftCard = SMODS.Consumable:extend {
         if not card.edition then
             card:set_edition({negative = true}, true, true)
         end
-    end
+    end,
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Consumable.inject(self)
+    end,
 }
 
 RIFTRAFT.RiftCard{
@@ -1507,6 +1516,10 @@ SMODS.Spectral{
         delay(0.5)
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
     end,
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Spectral.inject(self)
+    end,
 }
 SMODS.Spectral{
     key = "echo",
@@ -1583,6 +1596,10 @@ SMODS.Spectral{
                 playing_card_joker_effects(added_playing)
             end
         end
+    end,
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Spectral.inject(self)
     end,
 }
 
@@ -1661,6 +1678,10 @@ SMODS.Spectral{
             end
         }))
     end,
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Spectral.inject(self)
+    end,
 }
 
 SMODS.Seal{
@@ -1675,6 +1696,10 @@ SMODS.Seal{
     draw = function(self, card, layer)
         G.shared_seals[card.seal].role.draw_major = card
         G.shared_seals[card.seal]:draw_shader('negative', nil, card.ARGS.send_to_shader, nil, card.children.center)
+    end,
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Spectral.inject(self)
     end,
 }
 RIFTRAFT.check_destroy_for_seal = function(card)

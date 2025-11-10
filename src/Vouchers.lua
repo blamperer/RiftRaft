@@ -65,6 +65,10 @@ SMODS.Voucher{
     redeem = function(self, voucher)
         G.GAME.rift_rate = 2 -- same as spectral
     end,
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Voucher.inject(self)
+    end,
 }
 SMODS.Voucher{
     key = "riftshop_send",
@@ -78,6 +82,10 @@ SMODS.Voucher{
     atlas = "RiftShop",
     pos = {x = 4, y = 1},
     requires = {"v_riftraft_riftshop_retrieve"},
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Voucher.inject(self)
+    end,
 }
 
 SMODS.Voucher{
@@ -110,19 +118,19 @@ SMODS.Voucher{
 }
 SMODS.Voucher{
     key = "booster_slut",
-    loc_txt = {
-        name = "Microtransaction",
-        text = {
-            -- "Rerolls include",
-            -- "booster packs,",
-            -- "rerolls increase",
-            -- "by {C:money}$3{} {C:red}each{}"
-            "{C:attention}+1{} booster pack",
-            "per {C:attention}shop{},",
-            "shop always has",
-            "a {C:riftraft_void}Void{} Pack",
-        },
-    },
+    -- loc_txt = {
+    --     name = "Microtransaction",
+    --     text = {
+    --         -- "Rerolls include",
+    --         -- "booster packs,",
+    --         -- "rerolls increase",
+    --         -- "by {C:money}$3{} {C:red}each{}"
+    --         "{C:attention}+1{} booster pack",
+    --         "per {C:attention}shop{},",
+    --         "shop always has",
+    --         "a {C:riftraft_void}Void{} Pack",
+    --     },
+    -- },
     atlas = "RiftShop",
     pos = {x = 2, y = 2},
     requires = {"v_riftraft_booster_plus"},
@@ -143,6 +151,25 @@ SMODS.Voucher{
         end
     end,
 }
+if RIFTRAFT.only_jokers then
+    SMODS.process_loc_text(G.localization.descriptions.Voucher, "v_riftraft_booster_slut", {
+        name = "Microtransaction",
+        text = {
+            "{C:attention}+1{} booster pack",
+            "per {C:attention}shop{}",
+        },
+    })
+else
+    SMODS.process_loc_text(G.localization.descriptions.Voucher, "v_riftraft_booster_slut", {
+        name = "Microtransaction",
+        text = {
+            "{C:attention}+1{} booster pack",
+            "per {C:attention}shop{},",
+            "shop always has",
+            "a {C:riftraft_void}Void{} Pack",
+        },
+    })
+end
 
 SMODS.Voucher{
     key = "cardpack_card",
@@ -242,6 +269,10 @@ if next(SMODS.find_mod('Cryptid')) then
             },
         },
         pools = { ["Tier3"] = true },
+        inject = function(self)
+            if RIFTRAFT.only_jokers then return end
+            SMODS.Voucher.inject(self)
+        end,
     }
 
     SMODS.Voucher{

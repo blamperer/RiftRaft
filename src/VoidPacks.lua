@@ -126,6 +126,10 @@ for i,v in ipairs(booster_types) do
         weight = v[5],
         kind = "Rift",
         in_pool = function() return false end, -- only spawn them manually
+        inject = function(self)
+            if RIFTRAFT.only_jokers then return end
+            SMODS.Booster.inject(self)
+        end,
         -- cryptid compatibility
         cry_digital_hallucinations = {
             colour = HEX("526469"),
@@ -224,6 +228,10 @@ SMODS.Tag{
             return true
         end
     end,
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Tag.inject(self)
+    end,
 }
 SMODS.Tag{
     key = "voidpull",
@@ -298,5 +306,9 @@ SMODS.Tag{
             tag.triggered = true
             return true
         end
+    end,
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Tag.inject(self)
     end,
 }

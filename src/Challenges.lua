@@ -14,6 +14,10 @@ SMODS.Back{
         G.GAME.riftraft_abyssal_deck = true
         G.GAME.starting_params.boosters_in_shop = 1
     end,
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Back.inject(self)
+    end,
 }
 
 SMODS.Challenge{
@@ -42,6 +46,10 @@ SMODS.Challenge{
             {id = "c_riftraft_entropy"},
         },
     },
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Challenge.inject(self)
+    end,
 }
 
 SMODS.Challenge{
@@ -78,6 +86,10 @@ SMODS.Challenge{
             {id = "v_illusion"},
         },
     },
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Challenge.inject(self)
+    end,
 }
 
 SMODS.Challenge{
@@ -109,4 +121,8 @@ SMODS.Challenge{
             {id = "c_riftraft_dream"},
         },
     },
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return end
+        SMODS.Challenge.inject(self)
+    end,
 }
