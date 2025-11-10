@@ -88,6 +88,13 @@ return {
                 "so you can disable it here if you want.",
                 "(requires game restart)"
             },
+            c_riftraft_only_jokers = "Only Jokers",
+            c_riftraft_only_jokers_desc = {
+                "disables the Void mechanic of the mod entirely,",
+                "leaving only the Jokers and Spectral cards",
+                "that don't intersect with the Void.",
+                "(requires game restart)",
+            },
             c_riftraft_voidrate = "Void Pack Rate",
             c_riftraft_voidrate_desc = {
                 "the likelihood of Void Packs",

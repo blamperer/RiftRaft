@@ -1,7 +1,16 @@
+RIFTRAFT.VoidJokers = {}
+RIFTRAFT.VoidJoker = SMODS.Joker:extend{
+    inject = function(self)
+        if RIFTRAFT.only_jokers then return nil end
+        SMODS.Joker.inject(self)
+        table.insert(RIFTRAFT.VoidJokers, self)
+    end
+}
+
 ------------
 -- Common --
 ------------
-SMODS.Joker{
+RIFTRAFT.VoidJoker{
     key = "bundle",
     loc_txt = {
         name = "Bundle",
@@ -77,13 +86,13 @@ SMODS.Joker{
         end
     end,
 }
-SMODS.Joker{
+RIFTRAFT.VoidJoker{
     key = "refund",
     loc_txt = {
         name = "Receipt",
         text = {
-            "Gains {X:mult,C:white} X#1# {} Mult for every",
-            "{C:attention}#3#{} {C:dark_edition}Negative{} Jokers sold",
+            "This Joker gains {X:mult,C:white} X#1# {} Mult for",
+            "every {C:attention}#3#{} {C:dark_edition}Negative{} Jokers sold",
             "{C:inactive}(Currently {C:attention}#4#{C:inactive}/#3# and {X:mult,C:white} X#2# {C:inactive} Mult)"
         },
     },
@@ -116,7 +125,7 @@ SMODS.Joker{
         end
     end,
 }
-SMODS.Joker{
+RIFTRAFT.VoidJoker{
     key = "negativesixth",
     loc_txt = {
         name = "Supercollider",
@@ -214,7 +223,7 @@ local function calculate_collector_mult(card)
         return "-X"..(prev_xmult - card.ability.extra.xmult).." Mult"
     end
 end
-SMODS.Joker{
+RIFTRAFT.VoidJoker{
     key = "collector",
     loc_txt = {
         name = "Collector",
@@ -256,7 +265,7 @@ function RIFTRAFT.get_extra_card_limit(card)
     return (card.edition and card.edition.card_limit or 0)
         + (card.config.center.key == 'j_riftraft_joke' and card.ability.extra.amount or 0)
 end
-SMODS.Joker{
+RIFTRAFT.VoidJoker{
     key = "joke",
     loc_txt = {
         name = "Joke ",
@@ -307,6 +316,11 @@ SMODS.Joker{
     rarity = 3,
     cost = 8,
     blueprint_compat = true,
+    set_ability = function(self, card)
+        if RIFTRAFT.only_jokers then
+            card.ability.extra.xmult = 1.75
+        end
+    end,
     calculate = function(self, card, context)
         if context.other_consumeable then
             for k,v in ipairs(G.consumeables.cards) do
@@ -481,7 +495,7 @@ function RIFTRAFT.reset_abyss_joker(card, exclude)
 
     card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_riftraft_changed')})
 end
-SMODS.Joker{
+RIFTRAFT.VoidJoker{
     key = "abyss",
     loc_txt = {
         name = "Staring Back",
@@ -591,7 +605,7 @@ SMODS.Joker{
         return SMODS.Joker.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
     end
 }
-SMODS.Joker{
+RIFTRAFT.VoidJoker{
     key = "overflow",
     loc_txt = {
         name = "Overflow",
@@ -625,8 +639,8 @@ if RIFTRAFT.negative_playing_cards then
         loc_txt = {
             name = "Artist",
             text = {
-                "{C:mult}+#1#{} Mult per",
-                "hand size above #2#",
+                "{C:mult}+#1#{} Mult per amount",
+                "of cards in hand above #2#",
                 "{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)"
             },
         },
@@ -642,7 +656,7 @@ if RIFTRAFT.negative_playing_cards then
         cost = 4,
         blueprint_compat = true,
         update = function(self, card, dt)
-            card.ability.extra.mult = card.ability.extra.mult_gain * math.max((G.hand and G.hand.config.card_limit or 8) - 5, 0)
+            card.ability.extra.mult = card.ability.extra.mult_gain * math.max((G.hand and #G.hand.cards or 8) + (G.play and #G.play.cards or 0) - card.ability.extra.size, 0)
         end,
         calculate = function(self, card, context)
             if context.cardarea == G.jokers and context.joker_main then

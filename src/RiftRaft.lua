@@ -91,6 +91,7 @@ G.FUNCS.riftraft_allowbuy_config = function(e, save)
 end
 
 RIFTRAFT.negative_playing_cards = config.negative_cards
+RIFTRAFT.only_jokers = config.only_jokers
 RIFTRAFT.void_pack_rate = config.void_pack_rate / 5
 G.FUNCS.riftraft_allowbuy_config(config.allow_buy, false)
 
@@ -141,6 +142,16 @@ mod.config_tab = function()
                             ref_table = config,
                             ref_value = 'negative_cards',
                             callback = function() SMODS.save_mod_config(mod) end
+                        }),
+                        create_toggle({
+                            label = localize("c_riftraft_only_jokers"),
+                            info = localize("c_riftraft_only_jokers_desc"),
+                            ref_table = config,
+                            ref_value = 'only_jokers',
+                            callback = function(e)
+                                SMODS.save_mod_config(mod)
+                                RIFTRAFT.only_jokers = e
+                            end
                         }),
                         create_option_cycle({
                             label = localize("c_riftraft_voidrate"),
